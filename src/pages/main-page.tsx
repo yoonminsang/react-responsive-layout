@@ -9,7 +9,7 @@ const MainPage: React.FC = () => {
   const { width } = useWindowSize();
   const screenSize = screenSizeFn(width);
   return (
-    <Layout screenSize={screenSize}>
+    <Layout screenSize={screenSize} isRightPanel>
       <Main screenSize={screenSize} />
     </Layout>
   );

@@ -7,9 +7,11 @@ import { TScreenSize } from '@/types';
 import { useMenu } from '@/hooks/redux/use-menu';
 import RightSidebar from './right-sidebar';
 import Dummy from '@/components/common/dummy';
+import RightPanel from '@/layout/right-panel';
 
 interface IProps {
   screenSize: TScreenSize;
+  isRightPanel?: boolean;
 }
 
 const Wrapper = styled.div<{ isPadding: boolean }>`
@@ -23,7 +25,7 @@ const Wrapper = styled.div<{ isPadding: boolean }>`
   background-color: ${(props) => props.theme.lightGrey};
 `;
 
-const Layout: React.FC<IProps> = ({ children, screenSize }) => {
+const Layout: React.FC<IProps> = ({ children, screenSize, isRightPanel = false }) => {
   const sidebarRef = useRef<HTMLElement>(null);
   const rightSidebarRef = useRef<HTMLElement>(null);
   const { sidebar, onChangeSidebar } = useMenu();
@@ -48,6 +50,10 @@ const Layout: React.FC<IProps> = ({ children, screenSize }) => {
     else onChangeSidebar(null);
   }, [onChangeSidebar, sidebar]);
 
+  const onChangeRightSidebar = useCallback(() => {
+    onChangeSidebar('right');
+  }, [onChangeSidebar]);
+
   return (
     <>
       <Wrapper onClick={onRemoveCaseSidebar} isPadding={sidebar === 'left' && screenSize === 'xxlarge'}>
@@ -58,9 +64,14 @@ const Layout: React.FC<IProps> = ({ children, screenSize }) => {
       <Sidebar isSidebar={sidebar === 'left'} ref={sidebarRef}>
         {Dummy}
       </Sidebar>
-      <RightSidebar isSidebar={sidebar === 'right'} ref={rightSidebarRef} onChangeSidebar={onRemoveSidebar}>
-        {Dummy}
-      </RightSidebar>
+      {isRightPanel && (
+        <>
+          <RightPanel onChangeSidebar={onChangeRightSidebar}>{Dummy}</RightPanel>
+          <RightSidebar isSidebar={sidebar === 'right'} ref={rightSidebarRef} onChangeSidebar={onRemoveSidebar}>
+            {Dummy}
+          </RightSidebar>
+        </>
+      )}
     </>
   );
 };

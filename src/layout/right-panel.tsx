@@ -1,13 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useMenu } from '@/hooks/redux/use-menu';
 
 interface IProps {
-  rightPadding: boolean;
+  onChangeSidebar: () => void;
 }
 
-// TODO
-const Wrapper = styled.aside<IProps>`
+const Wrapper = styled.aside`
   overflow-x: hidden;
   overflow-y: scroll;
   width: 72px;
@@ -17,17 +15,14 @@ const Wrapper = styled.aside<IProps>`
   z-index: 5;
   transition: right 0.3s;
   position: fixed;
-  right: ${(props) => {
-    if (props.rightPadding) return '330px';
-    return '0px';
-  }};
+  top: 65px;
+  right: 0px;
 `;
 
-const RightPanel: React.FC<IProps> = ({ children, rightPadding }) => {
-  const { onChangeSidebar } = useMenu();
+const RightPanel: React.FC<IProps> = ({ children, onChangeSidebar }) => {
   return (
-    <Wrapper rightPadding={rightPadding}>
-      <button type="button" onClick={() => onChangeSidebar('right')}>
+    <Wrapper>
+      <button type="button" onClick={onChangeSidebar}>
         판넬 열기
       </button>
       오른쪽 판넬
